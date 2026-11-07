@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nifty Home — Home gadgets you didn’t know you needed</title>
+<meta name="description" content="Clever home gadgets that fix everyday annoyances, with a short note on why each one made my list. All $20 or under when picked.">
+<meta property="og:title" content="Nifty Home — Home gadgets you didn’t know you needed">
+<meta property="og:description" content="Clever home gadgets that fix everyday annoyances, with a direct link to Amazon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<p class="bar">As an Amazon Associate I earn from qualifying purchases. <a href="#disclosure">Disclosure</a></p>
+<header><div class="wrap"><a class="logo" href="index.html">Nifty<b>Home</b></a><a class="link" href="#picks">Home finds</a></div></header>
+<main id="top">
+<section class="hero">
+  <span class="pill">My shortlist of home finds</span>
+  <h1>Home gadgets you <em>didn’t know</em> you needed.</h1>
+  <p class="lead">I keep finding small gadgets that fix annoying everyday problems, the kind you only wish you’d bought sooner. Every one was $20 or under when I picked it. Each one has its own page on why it made my list, and a button that takes you straight to Amazon to check the price and read the reviews.</p>
+  <a class="btn" href="#picks">See the home finds ↓</a>
+  <div class="trust"><span>$20 and under when I picked them</span><span>No sign-up</span><span>Opens Amazon directly</span><span>Check the current price there</span></div>
+</section>
+<section class="sec" id="picks"><div class="wrap">
+  <h2>Home finds</h2>
+  <p class="sub">My honest shortlist. Open any find to read more, or go straight to Amazon, where you can read the full reviews before you decide.</p>
+  <div class="grid" id="grid"></div>
+</div></section>
+<section class="how"><div class="wrap">
+  <h2 style="font-size:clamp(24px,3.5vw,32px);font-weight:800">How this works</h2>
+  <div class="steps">
+    <div><b>1</b><h3>Browse</h3><p>Each find gets a page on the problem it solves and what to check before buying.</p></div>
+    <div><b>2</b><h3>Tap through</h3><p>The button opens the product on Amazon, where you see the live price and reviews.</p></div>
+    <div><b>3</b><h3>Buy there</h3><p>Amazon handles checkout, shipping and returns. Nothing is sold on this page.</p></div>
+  </div>
+</div></section>
+</main>
+<footer id="disclosure"><div class="wrap">
+  <p>Nifty Home is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com. As an Amazon Associate I earn from qualifying purchases.</p>
+  <p>Product buttons are affiliate links. If you buy through them I may earn a commission at no extra cost to you. Prices and availability are set by Amazon and change without notice, so none are shown here. Nifty Home is not Amazon and does not sell or ship these products.</p>
+</div></footer>
+<script src="products.js"></script>
+<script>
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+function media(p,c){if(p.img)return '<div class="'+c+' ph"><img src="'+esc(p.img)+'" alt="'+esc(p.alt||p.name)+'"'+(c==="tile"?' loading="lazy"':"")+'><span class="ill">'+esc(p.ill||"Illustrative image")+'</span></div>';return '<div class="'+c+'" aria-hidden="true">'+(p.art||p.icon)+'</div>'}
+function giftLine(p){return window.SEASON&&SEASON.on&&p.gift?'<p class="gift">🎁 '+esc(p.gift)+'</p>':''}
+function giftBlock(p){return window.SEASON&&SEASON.on&&p.gift?'<section class="blk"><h2>🎁 Gift idea</h2><p>'+esc(p.gift)+'</p><p class="small">'+esc(SEASON.note)+'</p></section>':''}
+function season(){var S=window.SEASON;if(!S||!S.on)return;document.body.classList.add("xmas");var q=function(s){return document.querySelector(s)};var a=q(".hero .pill");if(a)a.textContent=S.pill;var h=q(".hero h1");if(h)h.innerHTML=S.title;var l=q(".hero .lead");if(l)l.textContent=S.lead;var t=q("#picks h2");if(t)t.textContent="Gift ideas";var n=q(".hero .trust");if(n&&!q(".snote"))n.insertAdjacentHTML("afterend",'<p class="snote">'+esc(S.note)+'</p>')}
+document.getElementById("grid").innerHTML=window.PRODUCTS.filter(function(p){return !p.hide}).map(function(p,i){
+  return '<article class="card">'+media(p,"tile")+
+  '<div class="body"><h3>'+esc(p.name)+'</h3><p><b>Why it made my list:</b> '+esc(p.line)+'</p>'+giftLine(p)+
+  '<a class="btn" href="product.html?p='+encodeURIComponent(p.slug)+'">Read more</a>'+
+  '<a class="btn ghost" href="'+esc(p.link)+'" target="_blank" rel="sponsored nofollow noopener noreferrer">View on Amazon ↗</a><span class="disc">As an Amazon Associate I earn from qualifying purchases.</span></div></article>';
+}).join("");
+season();
+</script>
+</body>
+</html>

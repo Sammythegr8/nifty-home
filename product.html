@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nifty Home</title>
+<meta name="description" id="md" content="A home find from Nifty Home, with a direct link to Amazon.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<p class="bar">As an Amazon Associate I earn from qualifying purchases. <a href="#disclosure">Disclosure</a></p>
+<header><div class="wrap"><a class="logo" href="index.html">Nifty<b>Home</b></a><a class="back" href="index.html#picks">← All home finds</a></div></header>
+<main class="wrap" id="app"></main>
+<footer id="disclosure"><div class="wrap">
+  <p>Nifty Home is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com. As an Amazon Associate I earn from qualifying purchases.</p>
+  <p>Product buttons are affiliate links. If you buy through them I may earn a commission at no extra cost to you. Prices and availability are set by Amazon and change without notice, so none are shown here. Nifty Home is not Amazon and does not sell or ship these products.</p>
+</div></footer>
+<script src="products.js"></script>
+<script>
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+function media(p,c){if(p.img)return '<div class="'+c+' ph"><img src="'+esc(p.img)+'" alt="'+esc(p.alt||p.name)+'"'+(c==="tile"?' loading="lazy"':"")+'><span class="ill">'+esc(p.ill||"Illustrative image")+'</span></div>';return '<div class="'+c+'" aria-hidden="true">'+(p.art||p.icon)+'</div>'}
+function giftLine(p){return window.SEASON&&SEASON.on&&p.gift?'<p class="gift">🎁 '+esc(p.gift)+'</p>':''}
+function giftBlock(p){return window.SEASON&&SEASON.on&&p.gift?'<section class="blk"><h2>🎁 Gift idea</h2><p>'+esc(p.gift)+'</p><p class="small">'+esc(SEASON.note)+'</p></section>':''}
+function season(){var S=window.SEASON;if(!S||!S.on)return;document.body.classList.add("xmas");var q=function(s){return document.querySelector(s)};var a=q(".hero .pill");if(a)a.textContent=S.pill;var h=q(".hero h1");if(h)h.innerHTML=S.title;var l=q(".hero .lead");if(l)l.textContent=S.lead;var t=q("#picks h2");if(t)t.textContent="Gift ideas";var n=q(".hero .trust");if(n&&!q(".snote"))n.insertAdjacentHTML("afterend",'<p class="snote">'+esc(S.note)+'</p>')}
+season();
+var slug=new URLSearchParams(location.search).get("p")||location.hash.slice(1);
+if(!slug){location.replace("index.html");}
+var p=window.PRODUCTS.filter(function(x){return x.slug===slug})[0];
+var app=document.getElementById("app");
+if(!p){
+  document.title="Home find not found — Nifty Home";
+  app.innerHTML='<section class="hub" style="border:0"><h2>We couldn’t find that page</h2><p>It may have moved. Here are all the home finds.</p><a class="btn" href="index.html#picks">See all home finds</a></section>';
+}else{
+  document.title=p.name+" — Nifty Home";
+  document.getElementById("md").content=p.line;
+  var btn='<a class="btn" href="'+esc(p.link)+'" target="_blank" rel="sponsored nofollow noopener noreferrer">View on Amazon ↗</a><span class="disc">As an Amazon Associate I earn from qualifying purchases.</span>';
+  var li=function(a){return a.map(function(t){return "<li>"+esc(t)+"</li>"}).join("")};
+  app.innerHTML=
+  '<section class="pd">'+media(p,"big")+'<div><span class="pill">Home find</span><h1>'+esc(p.name)+'</h1><p class="lead">'+esc(p.line)+'</p>'+btn+'<p class="note">Opens Amazon in a new tab, where you can see the current price and reviews.</p></div></section>'+
+  '<section class="blk"><h2>The problem it solves</h2><p>'+esc(p.about)+'</p></section>'+
+  '<section class="blk"><h2>Why it made my list</h2><p>'+esc(p.how)+'</p></section>'+
+  '<section class="blk"><h2>Tips for using it</h2><ul>'+li(p.tips)+'</ul></section>'+
+  giftBlock(p)+'<section class="blk"><h2>Who it’s for</h2><p>'+esc(p.who)+'</p></section>'+
+  '<section class="blk"><h2>Before you buy</h2><ul>'+li(p.check)+'</ul><p class="small">This page describes what this kind of product does in general. For the exact size, features and current price, always check the Amazon listing.</p></section>'+
+  '<section class="blk"><h2>Common questions</h2>'+p.faq.map(function(f){return "<details><summary>"+esc(f[0])+"</summary><p>"+esc(f[1])+"</p></details>"}).join("")+'</section>'+
+  '<section class="blk">'+btn+'</section>'+
+  '<section class="hub"><h2>Want more home finds?</h2><p>See the other gadgets on my shortlist.</p><a class="btn ghost" href="index.html#picks">See other home finds →</a></section>';
+}
+</script>
+</body>
+</html>
